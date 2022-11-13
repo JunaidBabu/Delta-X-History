@@ -1,0 +1,19 @@
+name: data fetch
+
+on:
+  schedule:
+    - cron "*/1 * * * *"
+
+jobs:
+  fetch-json-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+    
+      - name: push
+        run: |
+          bash ./script.sh
