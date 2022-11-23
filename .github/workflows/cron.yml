@@ -2,8 +2,10 @@ on:
   push:
     branches:
       - "main"
-  schedule:
-    - cron: "0,5,10,15,20,25,30,35,40,45,50,55 * * * *"
+  repository_dispatch:
+    types: [my-event]
+  # schedule:
+  #   - cron: "0,5,10,15,20,25,30,35,40,45,50,55 * * * *"
 
 jobs:
   fetch-json-data:
@@ -18,3 +20,15 @@ jobs:
       - name: push
         run: |
           bash ./script.sh
+      - name: Repository Dispatch
+        uses: actions/github-script@v2
+        with:
+          github-token: ${{secrets.JUN_TOKEN}}
+          script: |
+            const fs = require('fs');
+            await github.repos.createDispatchEvent({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    event_type: "my-event",
+                    client_payload: { greeting: "I'm Meeseek. Loot at me!" }
+                  });
