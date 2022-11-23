@@ -17,3 +17,4 @@ git commit -am "data updated on - $(date)"
 git remote set-url "$remote_name" "$repo_uri" # includes access token
 git push --force-with-lease "$remote_name" "$gh_pages_branch"
 
+sleep 300
